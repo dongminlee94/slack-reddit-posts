@@ -1,31 +1,32 @@
 # Slack Reddit Posts
 
-subreddit의 hot post들을 특정 슬랙 채널로 보내는 트리거를 소개합니다.
+<img width="1143" src="https://github.com/Curt-Park/reddit-posts-to-slack/assets/14961526/14315a30-3285-433c-9a2a-5f4387e5814b">
+
+This repository introduces a trigger that automatically sends hot posts from a specified subreddit to a designated Slack channel.
 
 ## Preparation
 
 ### Reddit
 
-1. 레딧에 회원가입을 합니다. 이 때 아이디와 비밀번호가 꼭 등록되어 있어야 합니다.
-2. [레딧 애플리케이션](https://www.reddit.com/prefs/apps)을 생성합니다. **(매우 중요) web app, installed app, script 중 script를 선택합니다.**
-3. client id와 client secret 값을 메모합니다.
-4. Setup the following secrets for this repo.
-- `REDDIT_CLIENT_ID`
-- `REDDIT_CLIENT_SECRET`
-- `REDDIT_USERNAME`
-- `REDDIT_PASSWORD`
-5. Add subreddit names in `.github/workflows/slack-reddit-posts.yaml`.
+1. Sign up for a Reddit account. Ensure that your username and password are registered.
+2. Create [a Reddit application](https://www.reddit.com/prefs/apps). **Important: Select "script" as the application type from the available options (web app, installed app, script).**
+3. Note down the `client id` and `client secret` values.
+4. Set up the following secrets in this repository:
+    - `REDDIT_CLIENT_ID`
+    - `REDDIT_CLIENT_SECRET`
+    - `REDDIT_USERNAME`
+    - `REDDIT_PASSWORD`
+5. Add subreddit names to `.github/workflows/slack-reddit-posts.yaml`.
 
 ### Slack
 
-1. [슬랙 애플리케이션](https://api.slack.com/apps)을 생성합니다.
-2. 슬랙 workspace에 애플리케이션을 설치합니다.
-3. In `OAuth & Permissions`, add `chat:write` for `Bot Token Scopes`.
-4. Create a new channel and add the application in it.
-5. Setup the following secrets for this repo.
-- `SLACK_API_TOKEN`
-- `SLACK_CHANNEL_ID`
-
+1. Create [a slack application](https://api.slack.com/apps).
+2. Install the application to your Slack workspace.
+3. In `OAuth & Permissions`, add `chat:write` to the `Bot Token Scopes`.
+4. Create a new channel and add the application to it.
+5. Set up the following secrets in this repository:
+    - `SLACK_API_TOKEN`
+    - `SLACK_CHANNEL_ID`
 
 ## Usage
 
@@ -53,10 +54,6 @@ options:
   --slack-api-token SLACK_API_TOKEN                 Slack API Toekn
   --slack-channel-id SLACK_CHANNEL_ID               Slack Channel ID
 ```
-
-## Looks like...
-
-<img width="1143" src="https://github.com/Curt-Park/reddit-posts-to-slack/assets/14961526/14315a30-3285-433c-9a2a-5f4387e5814b">
 
 ## References
 
