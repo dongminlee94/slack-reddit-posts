@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        subreddit: ["MachineLearning"]
+        SUBREDDIT_NAME: ["MachineLearning"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.10
@@ -26,6 +26,6 @@ jobs:
             --reddit-client-secret ${{ secrets.REDDIT_CLIENT_SECRET }} \
             --reddit-username ${{ secrets.REDDIT_USERNAME }} \
             --reddit-password ${{ secrets.REDDIT_PASSWORD }} \
-            --subreddit ${{ matrix.subreddit }} \
+            --subreddit-name ${{ matrix.SUBREDDIT_NAME }} \
             --slack-api-token ${{ secrets.SLACK_API_TOKEN }} \
             --slack-channel-id ${{ secrets.SLACK_CHANNEL_ID }}
