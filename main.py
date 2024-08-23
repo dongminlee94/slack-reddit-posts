@@ -30,11 +30,10 @@ for submission in subreddit.hot(limit=args.n_posts):
     if submission.stickied:
         continue
 
-    post_title = f"<{submission.url}|{submission.title}> [Upvotes {submission.score}]"
-    post_titles.append((submission.score, post_title))
+    post_titles.append(f"<{submission.url}|{submission.title}> [Upvotes {submission.score}]")
 
 slack_messages = [f"*Today's Hot Posts of {args.subreddit_name} Subreddit*\n"]
-slack_messages += [f"{idx + 1}. {title}" for idx, (_, title) in enumerate(post_titles)]
+slack_messages += [f"{idx + 1}. {title}" for idx, title in enumerate(post_titles)]
 
 client = WebClient(token=args.slack_api_token)
 text = "\n".join(slack_messages)
