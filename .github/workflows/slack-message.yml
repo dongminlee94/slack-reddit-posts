@@ -1,0 +1,31 @@
+name: "Slack Reddit Posts"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 09:00 AM KST everyday.
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        subreddit: ["MachineLearning"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install packages
+        run: pip install -r requirements.txt
+      - name: Run the main script
+        run: |
+          python main.py \
+            --reddit-client-id ${{ secrets.REDDIT_CLIENT_ID }} \
+            --reddit-client-secret ${{ secrets.REDDIT_CLIENT_SECRET }} \
+            --reddit-username ${{ secrets.REDDIT_USERNAME }} \
+            --reddit-password ${{ secrets.REDDIT_PASSWORD }} \
+            --subreddit ${{ matrix.subreddit }} \
+            --slack-api-token ${{ secrets.SLACK_API_TOKEN }} \
+            --slack-channel-id ${{ secrets.SLACK_CHANNEL_ID }}
