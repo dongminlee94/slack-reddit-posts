@@ -25,15 +25,15 @@ reddit = praw.Reddit(
 
 subreddit = reddit.subreddit(args.subreddit_name)
 
-post_titles = []
+post = []
 for submission in subreddit.hot(limit=args.n_posts):
     if submission.stickied:
         continue
 
-    post_titles.append(f"<{submission.url}|{submission.title}> [Upvotes {submission.score}]")
+    post.append(f"<{submission.url}|{submission.title}> [Upvotes {submission.score}]")
 
 slack_messages = [f"*Today's Hot Posts of {args.subreddit_name} Subreddit*\n"]
-slack_messages += [f"{idx + 1}. {title}" for idx, title in enumerate(post_titles)]
+slack_messages += [f"{idx + 1}. {post}" for idx, post in enumerate(post)]
 
 client = WebClient(token=args.slack_api_token)
 text = "\n".join(slack_messages)
