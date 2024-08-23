@@ -2,7 +2,7 @@
 
 <img width="1143" src="https://github.com/Curt-Park/reddit-posts-to-slack/assets/14961526/14315a30-3285-433c-9a2a-5f4387e5814b">
 
-This repository introduces a trigger that automatically sends hot posts from a specified subreddit to a designated Slack channel.
+This repository introduces a trigger that automatically sends hot posts from specified subreddits to a designated Slack channel.
 
 ## Preparation
 
@@ -16,7 +16,7 @@ This repository introduces a trigger that automatically sends hot posts from a s
     - `REDDIT_CLIENT_SECRET`
     - `REDDIT_USERNAME`
     - `REDDIT_PASSWORD`
-5. Add subreddit names to `.github/workflows/slack-reddit-posts.yaml`.
+5. Add the names of the subreddits to `.github/workflows/slack-reddit-posts.yaml`.
 
 ### Slack
 
