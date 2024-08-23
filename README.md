@@ -8,7 +8,7 @@ This repository introduces a trigger that automatically sends hot posts from spe
 
 ### Reddit
 
-1. Sign up for a Reddit account. Ensure that your username and password are registered.
+1. Sign up for a Reddit account. Ensure that your `username` and `password` are registered.
 2. Create [a Reddit application](https://www.reddit.com/prefs/apps). **Important: Select "script" as the application type from the available options (web app, installed app, script).**
 3. Note down the `client id` and `client secret` values.
 4. Set up the following secrets in this repository:
@@ -59,3 +59,4 @@ options:
 
 - https://github.com/Curt-Park/reddit-posts-to-slack
 - https://velog.io/@iamnotwhale/praw%EB%A1%9C-%EB%A0%88%EB%94%A7-%ED%81%AC%EB%A1%A4%EB%A7%81%ED%95%98%EA%B8%B0
+- https://gengminy.tistory.com/52
