@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
       - name: Install packages
         run: pip install -r requirements.txt
       - name: Run the main script
@@ -27,5 +27,5 @@ jobs:
             --reddit-username ${{ secrets.REDDIT_USERNAME }} \
             --reddit-password ${{ secrets.REDDIT_PASSWORD }} \
             --subreddit-name ${{ matrix.SUBREDDIT_NAMES }} \
-            --slack-api-token ${{ secrets.SLACK_API_TOKEN }} \
-            --slack-channel-id ${{ secrets.SLACK_CHANNEL_ID }}
+            --slack-api-tokens ${{ secrets.SLACK_API_TOKENS }} \
+            --slack-channel-ids ${{ secrets.SLACK_CHANNEL_IDS }}

@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import praw
 from slack_sdk import WebClient
@@ -11,9 +12,12 @@ parser.add_argument("--reddit-username", type=str, help="Reddit Username")
 parser.add_argument("--reddit-password", type=str, help="Reddit Password")
 parser.add_argument("--subreddit-name", type=str, default="MachineLearning", help="Subreddit Name")
 parser.add_argument("--n-posts", type=int, default=20, help="Max Posts Number")
-parser.add_argument("--slack-api-token", type=str, help="Slack API Token")
-parser.add_argument("--slack-channel-id", type=str, help="Slack Channel ID")
+parser.add_argument("--slack-api-tokens", type=str, help="Slack API Tokens")
+parser.add_argument("--slack-channel-ids", type=str, help="Slack Channel IDs")
 args = parser.parse_args()
+
+slack_api_tokens = args.slack_api_tokens.split(',')
+slack_channel_ids = args.slack_channel_ids.split(',')
 
 reddit = praw.Reddit(
     client_id=args.reddit_client_id,
@@ -25,22 +29,23 @@ reddit = praw.Reddit(
 
 subreddit = reddit.subreddit(args.subreddit_name)
 
-post = []
+posts = []
 for submission in subreddit.hot(limit=args.n_posts):
     if submission.stickied:
         continue
 
-    post.append(f"<{submission.url}|{submission.title}> [Upvotes {submission.score}]")
+    posts.append(f"<{submission.url}|{submission.title}> [Upvotes {submission.score}]")
 
 slack_messages = [f"*Today's Hot Posts of {args.subreddit_name} Subreddit*\n"]
-slack_messages += [f"{idx + 1}. {post}" for idx, post in enumerate(post)]
-
-client = WebClient(token=args.slack_api_token)
+slack_messages += [f"{idx + 1}. {post}" for idx, post in enumerate(posts)]
 text = "\n".join(slack_messages)
 
-try:
-    response = client.chat_postMessage(channel=args.slack_channel_id, text=text)
-except SlackApiError as e:
-    assert e.response["ok"] is False
-    assert e.response["error"]
-    print(f'Got an error: {e.response["error"]}')
+for token, channel_id in zip(slack_api_tokens, slack_channel_ids):
+    try:
+        client = WebClient(token=token.strip())
+        response = client.chat_postMessage(channel=channel_id.strip(), text=text)
+        print(f"Successfully sent message to channel {channel_id.strip()}")
+    except SlackApiError as e:
+        print(f'Got an error for channel {channel_id.strip()}: {e.response["error"]}')
+        assert e.response["ok"] is False
+        assert e.response["error"]
