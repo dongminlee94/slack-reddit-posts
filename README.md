@@ -25,8 +25,8 @@ This repository introduces a trigger that automatically sends hot posts from spe
 3. In `OAuth & Permissions`, add `chat:write` to the `Bot Token Scopes`.
 4. Create a new channel and add the application to it.
 5. Set up the following secrets in this repository:
-    - `SLACK_API_TOKEN`
-    - `SLACK_CHANNEL_ID`
+    - `SLACK_API_TOKENS`
+    - `SLACK_CHANNEL_IDS`
 
 ## Usage
 
@@ -40,8 +40,8 @@ usage: main.py [-h]
                [--reddit-password REDDIT_PASSWORD]
                [--subreddit-name SUBREDDIT_NAME]
                [--n-posts N_POSTS]
-               [--slack-api-token SLACK_API_TOKEN]
-               [--slack-channel-id SLACK_CHANNEL_ID]
+               [--slack-api-tokens SLACK_API_TOKENS]
+               [--slack-channel-ids SLACK_CHANNEL_IDS]
 
 options:
   -h, --help            show this help message and exit
@@ -51,8 +51,8 @@ options:
   --reddit-password REDDIT_PASSWORD                 Reddit Password
   --subreddit-name SUBREDDIT_NAME                   Subreddit Name
   --n-posts N_POSTS                                 Max Posts Number
-  --slack-api-token SLACK_API_TOKEN                 Slack API Toekn
-  --slack-channel-id SLACK_CHANNEL_ID               Slack Channel ID
+  --slack-api-tokens SLACK_API_TOKENS               Slack API Toekns
+  --slack-channel-ids SLACK_CHANNEL_IDS             Slack Channel IDs
 ```
 
 ## References
