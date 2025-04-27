@@ -2,7 +2,7 @@
 
 <img width="1143" src="https://github.com/Curt-Park/reddit-posts-to-slack/assets/14961526/14315a30-3285-433c-9a2a-5f4387e5814b">
 
-This repository introduces a trigger that automatically sends hot posts from specified subreddits to a designated Slack channel.
+This repository introduces a trigger that automatically fetches hot posts from a subreddit, generates AI summaries, and sends them to a designated Slack channel.
 
 ## Preparation
 
@@ -16,7 +16,7 @@ This repository introduces a trigger that automatically sends hot posts from spe
     - `REDDIT_CLIENT_SECRET`
     - `REDDIT_USERNAME`
     - `REDDIT_PASSWORD`
-5. Add the names of the subreddits to `.github/workflows/slack-reddit-posts.yaml`.
+5. Add the subreddit name to `.github/workflows/slack-reddit-posts.yaml`.
 
 ### Google GenAI API Key
 
@@ -24,7 +24,7 @@ This repository introduces a trigger that automatically sends hot posts from spe
 2. Enable the GenAI API in the Google Cloud Console.
 3. Create a new API key from the credentials section.
 4. Set up the following secret in this repository:
-  - `GENAI_API_KEY`
+    - `GENAI_API_KEY`
 
 ### Slack
 
