@@ -1,4 +1,4 @@
-name: "Slack Reddit Posts"
+name: Slack Reddit Posts
 
 on:
   schedule:
@@ -8,17 +8,15 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        SUBREDDIT_NAMES: ["MachineLearning"]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v4
         with:
           python-version: "3.10"
-      - name: Install packages
-        run: pip install -r requirements.txt
+      - name: Set up packages
+        shell: bash -l {0}
+        run: make setup
       - name: Run the main script
         run: |
           python main.py \
@@ -26,6 +24,7 @@ jobs:
             --reddit-client-secret ${{ secrets.REDDIT_CLIENT_SECRET }} \
             --reddit-username ${{ secrets.REDDIT_USERNAME }} \
             --reddit-password ${{ secrets.REDDIT_PASSWORD }} \
-            --subreddit-name ${{ matrix.SUBREDDIT_NAMES }} \
+            --subreddit-name "MachineLearning" \
+            --genai-api-key ${{ secrets.GENAI_API_KEY }} \
             --slack-api-tokens ${{ secrets.SLACK_API_TOKENS }} \
             --slack-channel-ids ${{ secrets.SLACK_CHANNEL_IDS }}

@@ -1,0 +1,148 @@
+[build-system]
+# Reference: https://pdm-project.org
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project]
+name = "slack-reddit-posts"
+version = "0.0.0"
+description = "A trigger that automatically sends posts from subreddits to a Slack channel."
+authors = [
+    {name = "dongminlee94", email = "kid33629@gmail.com"},
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+dependencies = [
+    "google-genai==1.11.0",
+    "praw==7.8.1",
+    "PyYAML==6.0.2",
+    "slack_sdk==3.31.0",
+    "tqdm==4.67.1",
+]
+
+[dependency-groups]
+dev = [
+    "isort>=6.0.1",
+    "ruff>=0.9.10",
+    "pyright>=1.1.396",
+    "pre-commit>=4.1.0",
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.ruff]
+# Reference: https://docs.astral.sh/ruff/settings
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Same as Black.
+line-length = 110
+indent-width = 4
+
+# Assume Python 3.10
+target-version = "py310"
+
+[tool.ruff.format]
+# Enable reformatting of code snippets in docstrings.
+docstring-code-format = true
+
+# This only has an effect when the `docstring-code-format` setting is enabled.
+docstring-code-line-length = "dynamic"
+
+# Indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Use double quotes for strings.
+quote-style = "double"
+
+# Respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint]
+# Reference: https://docs.astral.sh/ruff/rules
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+select = [
+    "ANN",      # flake8-annotations
+    "ASYNC",    # flake8-async
+    "S",        # flake8-bandit
+    "BLE",      # flake8-blind-except
+    "B",        # flake8-bugbear
+    "A",        # flake8-builtins
+    "COM",      # flake8-commas
+    "T10",      # flake8-debugger
+    "ISC",      # flake8-implicit-str-concat
+    "LOG",      # flake8-logging
+    "G",        # flake8-logging-format
+    "PIE",      # flake8-pie
+    "PT",       # flake8-pytest-style
+    "Q",        # flake8-quotes
+    "RET",      # flake8-return
+    "SLF",      # flake8-self
+    "SIM",      # flake8-simplify
+    "TD",       # flake8-todos
+    "ARG",      # flake8-unused-arguments
+    "I",        # isort
+    "N",        # pep8-naming
+    "PERF",     # Perflint
+    "E",        # pycodestyle errors
+    "W",        # pycodestyle warnings
+    "D",        # pydocstyle
+    "F",        # pyflakes
+    "PL",       # pylint
+    "UP",       # pyupgrade
+]
+ignore = ["D104", "D203", "D212", "COM812"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.pylint]
+max-args = 10
+max-statements = 50
+
+[tool.pyright]
+include = ["src"]
+exclude = []
+ignore = []
+defineConstant = {}
+stubPath = ""
+
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+
+pythonVersion = "3.10"

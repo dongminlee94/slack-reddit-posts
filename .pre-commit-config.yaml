@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: format
+        name: format
+        language: system
+        entry: make format
+
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        language: system
+        entry: make lint

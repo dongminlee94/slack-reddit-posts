@@ -18,6 +18,14 @@ This repository introduces a trigger that automatically sends hot posts from spe
     - `REDDIT_PASSWORD`
 5. Add the names of the subreddits to `.github/workflows/slack-reddit-posts.yaml`.
 
+### Google GenAI API Key
+
+1. Sign up for [a Google Cloud account](https://console.cloud.google.com/home/dashboard) if you don't already have one.
+2. Enable the GenAI API in the Google Cloud Console.
+3. Create a new API key from the credentials section.
+4. Set up the following secret in this repository:
+  - `GENAI_API_KEY`
+
 ### Slack
 
 1. Create [a slack application](https://api.slack.com/apps).
@@ -35,11 +43,12 @@ $ python main.py -h
 
 usage: main.py [-h]
                [--reddit-client-id REDDIT_CLIENT_ID]
-               [--reddit-client-secret REDDIT_CLIENT_SECRET] 
+               [--reddit-client-secret REDDIT_CLIENT_SECRET]
                [--reddit-username REDDIT_USERNAME]
                [--reddit-password REDDIT_PASSWORD]
                [--subreddit-name SUBREDDIT_NAME]
                [--n-posts N_POSTS]
+               [--genai-api-key GENAI_API_KEY]
                [--slack-api-tokens SLACK_API_TOKENS]
                [--slack-channel-ids SLACK_CHANNEL_IDS]
 
@@ -51,6 +60,7 @@ options:
   --reddit-password REDDIT_PASSWORD                 Reddit Password
   --subreddit-name SUBREDDIT_NAME                   Subreddit Name
   --n-posts N_POSTS                                 Max Posts Number
+  --genai-api-key GENAI_API_KEY                     Google GenAI API Key
   --slack-api-tokens SLACK_API_TOKENS               Slack API Toekns
   --slack-channel-ids SLACK_CHANNEL_IDS             Slack Channel IDs
 ```
