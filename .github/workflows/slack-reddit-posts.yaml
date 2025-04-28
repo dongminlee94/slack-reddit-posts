@@ -19,7 +19,7 @@ jobs:
         run: make setup
       - name: Run the main script
         run: |
-          python main.py \
+          pdm run python main.py \
             --reddit-client-id ${{ secrets.REDDIT_CLIENT_ID }} \
             --reddit-client-secret ${{ secrets.REDDIT_CLIENT_SECRET }} \
             --reddit-username ${{ secrets.REDDIT_USERNAME }} \
