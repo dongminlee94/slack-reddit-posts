@@ -45,7 +45,7 @@ main_message_text = "\n".join(main_slack_messages)
 
 # Initialize LLM Client
 genai_client = GenAIClient(
-    api_key=args.genai_api_key, model="gemini-2.5-pro-preview-03-25", response_mime_type="text/plain"
+    api_key=args.genai_api_key, model="gemini-2.5-flash-preview-04-17", response_mime_type="text/plain"
 )
 
 # Generate summaries for each collected Reddit post.
