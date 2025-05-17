@@ -1,6 +1,8 @@
 """Main script to collect Reddit posts, summarize them using AI, and send to Slack."""
 
 import argparse
+import ast
+import json
 
 import yaml
 from tqdm import tqdm
@@ -34,32 +36,47 @@ reddit_collector = RedditCollector(
 )
 
 # Collect Reddit posts
-posts_for_main, submissions_to_summarize = reddit_collector.collect_hot_posts(
+submissions_data = reddit_collector.collect_hot_posts(
     subreddit_name=args.subreddit_name, n_posts=args.n_posts
 )
 
-# Prepare the main Slack message text
-main_slack_messages = [f"*Today's Hot Posts of {args.subreddit_name} Subreddit*\n"]
-main_slack_messages += [f"{idx + 1}. {post}" for idx, post in enumerate(posts_for_main)]
-main_message_text = "\n".join(main_slack_messages)
-
 # Initialize LLM Client
 genai_client = GenAIClient(
-    api_key=args.genai_api_key, model="gemini-2.5-flash-preview-04-17", response_mime_type="text/plain"
+    api_key=args.genai_api_key, model="gemini-2.5-flash-preview-04-17", response_mime_type="application/json"
 )
 
 # Generate summaries for each collected Reddit post.
-summaries_for_threads = []
-for idx, data in enumerate(tqdm(submissions_to_summarize, desc="Summarizing Posts")):
+summaries_data = {}
+for idx, data in enumerate(tqdm(submissions_data, desc="Summarizing Posts")):
     # Generate a summary for the current post's content using the GenAI client.
-    summary = genai_client.create_content(
+    response = genai_client.generate_content_with_retry(
         contents=[data["contents"]],
         system_instruction=system_instruction,
+        temperature=0.5,
+        top_p=0.5,
     )
 
-    # Format the summary with the post title for the Slack thread.
-    thread_summary_text = f"*{idx + 1}. {data['title']}*\n\n{summary}"
-    summaries_for_threads.append(thread_summary_text)
+    response_text = response.text
+
+    if response_text is None:
+        raise ValueError(
+            f"No text content received from LLM for post idx {idx}: "
+            f"{data['title']}. Cannot parse None as JSON."
+        )
+
+    try:
+        summary = json.loads(response_text)
+    except json.JSONDecodeError:
+        summary = ast.literal_eval(response_text)
+    except Exception as e:
+        raise ValueError(f"JSON parsing failed: {response_text}") from e
+
+    # Format the summary with the post title for the Slack message.
+    three_line_summary = "\n".join(summary["세줄 요약"])
+    summaries_data[idx] = {
+        "main_message_text": f"*{idx + 1}. {data['title']}*\n\n{three_line_summary}",
+        "thread_message_text": f"*본문 요약*\n{summary['본문 요약']}\n\n*댓글 요약*\n{summary['댓글 요약']}",
+    }
 
 # Split the comma-separated Slack tokens and channel IDs into lists.
 slack_api_tokens = args.slack_api_tokens.split(",")
@@ -70,13 +87,18 @@ for token, channel_id in zip(slack_api_tokens, slack_channel_ids, strict=False):
     # Initialize the SlackNotifier
     slack_notifier = SlackNotifier(token=token)
 
-    # Send the main message (list of posts) to the current channel and get its timestamp.
-    main_message_ts = slack_notifier.send_main_message(channel_id=channel_id, text=main_message_text)
+    # Send the title Slack message text
+    title_message_text = f"*Today's Hot Posts of {args.subreddit_name} Subreddit*\n"
+    slack_notifier.send_main_message(channel_id=channel_id, text=title_message_text)
 
-    # Send each summary as a threaded message under the main post.
-    for thread_text in summaries_for_threads:
+    # Send each summary to Slack
+    for data in summaries_data.values():
+        main_message_ts = slack_notifier.send_main_message(
+            channel_id=channel_id, text=data["main_message_text"]
+        )
+
         slack_notifier.send_thread_message(
             channel_id=channel_id,
-            text=thread_text,
+            text=data["thread_message_text"],
             thread_ts=main_message_ts,
         )

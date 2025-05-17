@@ -37,12 +37,11 @@ class RedditCollector:
 
         return "\n".join(all_comments_text)
 
-    def collect_hot_posts(self, subreddit_name: str, n_posts: int) -> tuple[list[str], list[dict[str, str]]]:
+    def collect_hot_posts(self, subreddit_name: str, n_posts: int) -> list[dict[str, str]]:
         """Collect top 'hot' posts, their text, and comments from a subreddit."""
         subreddit = self._reddit.subreddit(subreddit_name)
 
         submissions_data = []
-        title_data = []
 
         for submission in subreddit.hot(limit=n_posts):
             if submission.stickied:
@@ -53,7 +52,6 @@ class RedditCollector:
             comments_text = self._get_all_comments_text(submission)
             contents = f"제목:\n{title}\n\n본문:\n{selftext}\n\n댓글:\n{comments_text}"
 
-            title_data.append(title)
             submissions_data.append({"title": title, "contents": contents})
 
-        return title_data, submissions_data
+        return submissions_data

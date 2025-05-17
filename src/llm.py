@@ -1,7 +1,12 @@
 """Client for Google Generative AI API interaction."""
 
+import random
+import time
+
 from google import genai
-from google.genai.types import GenerateContentConfig
+from google.genai.errors import APIError
+from google.genai.types import GenerateContentConfig, GenerateContentResponse
+from httpx import RemoteProtocolError, TimeoutException
 
 
 class GenAIClient:
@@ -13,14 +18,52 @@ class GenAIClient:
         self._model = model
         self._response_mime_type = response_mime_type
 
-    def create_content(self, contents: list[str], system_instruction: str) -> str | None:
+    def _generate_content(
+        self,
+        contents: list[str],
+        system_instruction: str,
+        temperature: float,
+        top_p: float,
+    ) -> GenerateContentResponse:
         """Generate content using the specified model, content, and system instruction."""
-        response = self._client.models.generate_content(
+        return self._client.models.generate_content(
             model=self._model,
             contents=contents,
             config=GenerateContentConfig(
-                system_instruction=system_instruction, response_mime_type=self._response_mime_type
+                system_instruction=system_instruction,
+                temperature=temperature,
+                top_p=top_p,
+                response_mime_type=self._response_mime_type,
             ),
         )
 
-        return response.text
+    def generate_content_with_retry(
+        self,
+        contents: list[str],
+        system_instruction: str,
+        temperature: float,
+        top_p: float,
+        max_retries: int = 5,
+        backoff_factor: int = 3,
+        initial_delay: int = 1,
+    ) -> GenerateContentResponse:
+        """Generate content with a retry mechanism for transient errors."""
+        for attempt in range(max_retries + 1):
+            try:
+                return self._generate_content(
+                    contents=contents,
+                    system_instruction=system_instruction,
+                    temperature=temperature,
+                    top_p=top_p,
+                )
+
+            except (APIError, RemoteProtocolError, TimeoutException) as e:
+                if attempt == max_retries:
+                    raise RuntimeError(f"Max retries reached. Error: {e}") from e
+
+                delay = initial_delay * (backoff_factor**attempt) + random.uniform(0, 1)  # noqa: S311
+                time.sleep(delay)
+            except Exception as e:
+                raise e
+
+        raise RuntimeError("Retry loop completed without returning a response or raising a specific error.")
