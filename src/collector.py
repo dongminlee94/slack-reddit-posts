@@ -24,7 +24,7 @@ class RedditCollector:
         all_comments_text = []
 
         submission.comments.replace_more(limit=None)
-        comment_queue = deque(submission.comments)  # type: ignore
+        comment_queue = deque(submission.comments)  # pyrefly: ignore
 
         while comment_queue:
             comment = comment_queue.popleft()

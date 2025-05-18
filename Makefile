@@ -19,5 +19,5 @@ format:
 	pdm run ruff format .
 
 lint:
-	pdm run pyright .
+	pdm run pyrefly check
 	pdm run ruff check . --fix --unsafe-fixes

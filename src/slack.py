@@ -14,7 +14,7 @@ class SlackNotifier:
         """Send a message to a specified Slack channel."""
         response = self._client.chat_postMessage(channel=channel_id, text=text)
 
-        return response["ts"]  # type: ignore
+        return response["ts"]  # pyrefly: ignore
 
     def send_thread_message(self, channel_id: str, text: str, thread_ts: str) -> None:
         """Send a reply message within a specific Slack thread."""

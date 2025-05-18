@@ -1,6 +1,6 @@
 """Client for Google Generative AI API interaction."""
 
-import random
+import secrets
 import time
 
 from google import genai
@@ -61,7 +61,7 @@ class GenAIClient:
                 if attempt == max_retries:
                     raise RuntimeError(f"Max retries reached. Error: {e}") from e
 
-                delay = initial_delay * (backoff_factor**attempt) + random.uniform(0, 1)  # noqa: S311
+                delay = initial_delay * (backoff_factor**attempt) + secrets.SystemRandom().uniform(0, 1)
                 time.sleep(delay)
             except Exception as e:
                 raise e
