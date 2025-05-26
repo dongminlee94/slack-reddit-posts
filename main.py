@@ -58,7 +58,7 @@ for idx, data in enumerate(tqdm(submissions_data, desc="Summarizing Posts")):
 
     response_text = response.text
 
-    print(f"idx: {idx}\n, response_text: {response_text}\n\n")
+    print(f"idx: {idx}\nresponse_text:\n{response_text}\n\n")
 
     if response_text is None:
         raise ValueError(
