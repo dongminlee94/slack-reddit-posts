@@ -42,7 +42,7 @@ submissions_data = reddit_collector.collect_hot_posts(
 
 # Initialize LLM Client
 genai_client = GenAIClient(
-    api_key=args.genai_api_key, model="gemini-2.5-flash-preview-04-17", response_mime_type="application/json"
+    api_key=args.genai_api_key, model="gemini-2.5-pro-preview-06-05", response_mime_type="application/json"
 )
 
 # Generate summaries for each collected Reddit post.
