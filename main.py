@@ -17,7 +17,7 @@ parser.add_argument("--reddit-client-secret", type=str, help="Reddit Client Secr
 parser.add_argument("--reddit-username", type=str, help="Reddit Username")
 parser.add_argument("--reddit-password", type=str, help="Reddit Password")
 parser.add_argument("--subreddit-name", type=str, help="Subreddit Name")
-parser.add_argument("--n-posts", type=int, default=20, help="Max Posts Number")
+parser.add_argument("--n-posts", type=int, default=7, help="Max Posts Number")
 parser.add_argument("--genai-api-key", type=str, help="Google GenAI API Key")
 parser.add_argument("--slack-api-tokens", type=str, help="Slack API Tokens")
 parser.add_argument("--slack-channel-ids", type=str, help="Slack Channel IDs")
